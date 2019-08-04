@@ -1,6 +1,9 @@
 <?php
 
-/*
+/*use Illuminate\Support\Facades\Auth;
+
+
+
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
@@ -11,6 +14,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+use Illuminate\Support\Facades\Route;
+
+Route::group(['prefix' => 'admin'], function () {
+
+    /* Authentication Routes */
+    Route::get('login', 'AuthenticationController@index')->name('login');
+    Route::post('login', 'AuthenticationController@login')->name('authenticateUser');
+    Route::get('logout', 'AuthenticationController@logout')->name('logout');
+
+    Route::get('/', 'AuthenticationController@home')->name('adminHome');
+
+    Route::resource('articles', 'ArticlesController');
+
+    Route::resource('categories', 'CategoriesController');
 });
