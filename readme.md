@@ -8,6 +8,7 @@
 - Run: php artisan storage:link.
 - Run: php artisan serve.
 - Use (admin@task.com) as email and (password) as password to access dashboard for adding articles.
+- dashboard link: http://localhost:8000/admin
 
 ### Adding database configurations:
 
