@@ -2,10 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Article;
+use App\Category;
+use App\Http\Requests\StoreArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
+use Illuminate\Support\Facades\Storage;
 
 class ArticlesController extends Controller
 {
+    /**
+     * ArticlesController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +25,9 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        return view('admin.articles.index');
+        $articles = Article::paginate(10);
+
+        return view('admin.articles.index', compact('articles'));
     }
 
     /**
@@ -23,7 +37,9 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        //
+        $categories = Category::all();
+
+        return view('admin.articles.store', compact('categories'));
     }
 
     /**
@@ -32,20 +48,13 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreArticleRequest $request)
     {
-        //
-    }
+        $path = Storage::disk('public')->putFile('articles/images', $request->file('image'));
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        Article::create($request->only(['title', 'content', 'category_id']) + ['image' => $path]);
+
+        return redirect()->back()->with(['status' => 'success', 'message' => 'Article added successfully.']);
     }
 
     /**
@@ -54,9 +63,11 @@ class ArticlesController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Article $article)
     {
-        //
+        $categories = Category::all();
+
+        return view('admin.articles.update', compact('article', 'categories'));
     }
 
     /**
@@ -66,9 +77,19 @@ class ArticlesController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-        //
+        $request_data = $request->only(['title', 'content', 'category_id']);
+
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($article->image);
+            $path = Storage::disk('public')->putFile('articles/images', $request->file('image'));
+            $request_data['image'] = $path;
+        }
+
+        $article->update($request_data);
+
+        return redirect()->back()->with(['status' => 'success', 'message' => 'Article added successfully.']);
     }
 
     /**
@@ -76,9 +97,14 @@ class ArticlesController extends Controller
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
-    public function destroy($id)
+    public function destroy(Article $article)
     {
-        //
+        $article->delete();
+
+        Storage::disk('public')->delete($article->image);
+
+        return redirect()->back()->with(['status' => 'success', 'message' => 'Article deleted successfully.']);
     }
 }

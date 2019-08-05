@@ -13,7 +13,16 @@ class Categories extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('categories', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::table('articles', function (Blueprint $table) {
+            $table->foreign('category_id')->references('id')
+                ->on('categories')->onDelete('cascade');
+        });
     }
 
     /**
@@ -23,6 +32,10 @@ class Categories extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('categories');
+
+        Schema::table('articles', function (Blueprint $table) {
+            $table->dropForeign('category_id');
+        });
     }
 }

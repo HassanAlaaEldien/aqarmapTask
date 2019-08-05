@@ -5,6 +5,7 @@
 - Run: composer install.
 - Run: php artisan migrate.
 - Run: php artisan db:seed.
+- Run: php artisan storage:link.
 - Run: php artisan serve.
 - Use (admin@task.com) as email and (password) as password to access dashboard for adding articles.
 

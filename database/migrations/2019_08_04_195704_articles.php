@@ -13,7 +13,14 @@ class Articles extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('articles', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->text('content');
+            $table->string('image');
+            $table->unsignedBigInteger('category_id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -23,6 +30,6 @@ class Articles extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('articles');
     }
 }

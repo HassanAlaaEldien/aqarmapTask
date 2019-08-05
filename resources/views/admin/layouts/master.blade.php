@@ -6,6 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Task - Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/images/icon/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.min.css') }}">
@@ -44,13 +45,7 @@
         <div class="page-title-area">
             <div class="row align-items-center">
                 <div class="col-sm-6">
-                    <div class="breadcrumbs-area clearfix">
-                        <h4 class="page-title pull-left">Dashboard</h4>
-                        <ul class="breadcrumbs pull-left">
-                            <li><a href="#!">Home</a></li>
-                            <li><span>Dashboard</span></li>
-                        </ul>
-                    </div>
+                    @yield('breadcrumbs')
                 </div>
                 <div class="col-sm-6 clearfix">
                     <div class="user-profile pull-right">

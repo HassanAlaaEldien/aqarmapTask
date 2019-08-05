@@ -43,7 +43,7 @@
                     <h4>Sign In</h4>
                     <p>Hello there, Sign in and start managing your Admin Template</p>
                 </div>
-                @include('admin.includes.errors')
+                @include('admin.includes.messages')
                 <div class="login-form-body">
                     <div class="form-gp">
                         <label for="exampleInputEmail1">Email address</label>

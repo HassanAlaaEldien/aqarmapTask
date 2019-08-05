@@ -17,7 +17,6 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'admin'], function () {
-
     /* Authentication Routes */
     Route::get('login', 'AuthenticationController@index')->name('login');
     Route::post('login', 'AuthenticationController@login')->name('authenticateUser');
@@ -29,3 +28,10 @@ Route::group(['prefix' => 'admin'], function () {
 
     Route::resource('categories', 'CategoriesController');
 });
+
+Route::get('/','FrontController@index')->name('home');
+
+Route::get('/post/{article}','FrontController@post')->name('post');
+
+Route::resource('articles.comments', 'CommentsController');
+
